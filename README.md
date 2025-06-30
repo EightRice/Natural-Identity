@@ -23,8 +23,6 @@ cli/ Rust‑based CLI front‑end
 docs/ white‑paper, threat model, benchmark reports
 submissions/ final artefacts + evaluation logs
 
-objectivec
-Copy
 
 ### Build & Test
 ```bash
@@ -37,6 +35,17 @@ python -m models.watermark.encode --in original.mp4 --weights weights.pt --out s
 # verify new footage
 cargo run --bin nid-verify signed.mp4 weights.pt
 All commands fall back to pure‑CPU if no GPU is present, though with reduced throughput.
+```
+### Python Quickstart
+```python
+from natural_identity import generate_identity, sign_video, verify_video, save_public_key, load_public_key
+
+id_obj = generate_identity("my_face.mp4")
+sign_video("clip.mp4", id_obj, "signed.mp4")
+save_public_key(id_obj.public_key, "identity.pub")
+print(verify_video("signed.mp4", load_public_key("identity.pub")))
+```
+
 
 Definition of Done
 Identity training converges within 30 epochs (<3 hours on a single RTX 4070) and yields verification F1 ≥ 0.90 on the open‑source DFDC subset.
